@@ -1,0 +1,8 @@
+Data cleaning steps:
+
+1- Clear empty data
+2- Train/Test Split (80% train, 20% Test)
+3- Converting all the characters to lowercase
+4- converting all whitespace and punctuation into a single space to get rid of any inconsistencies.
+5- Removing HTML Tags (using BeautifulSoup’s)
+6- Expanding Contractions
