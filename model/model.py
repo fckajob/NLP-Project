@@ -32,25 +32,25 @@ class ReviewModel:
         self.nlp.disable_pipes(*other_pipes)
 
         # Add our desired labels for the Text Categorizer
-        self.textcat.add_label("1 Star")
-        self.textcat.add_label("2 Star")
-        self.textcat.add_label("3 Star")
-        self.textcat.add_label("4 Star")
-        self.textcat.add_label("5 Star")
+        self.textcat.add_label("1")
+        self.textcat.add_label("2")
+        self.textcat.add_label("3")
+        self.textcat.add_label("4")
+        self.textcat.add_label("5")
 
 
-    def createExample(self):
-        exampleText = "i used to beats headphones but after their partnership with monster cables ended, the quality of their headphones went down hill. i was replacing my beats with new ones every 9-12 months since the headphones keep blowing out. these v-moda headphones are great, never had any issue on the construction and durability of these headphones. the sound quality is top notch and provides a deeper bass sound than beats and bose in-ear headphones. bit on the pricey side, but worth the purchase if you're an avid listener."  
+    def createTrainData(self):
+        exampleText = "i used to beats headphones but after their partnership with monster cables ended, the quality of their headphones went down hill. i was replacing my beats with new ones every 9-12 months since the headphones keep blowing out. these v-moda headphones are great, never had any issue on the construction and durability of these headphones. the sound quality is top notch and provides a deeper bass sound than beats and bose in-ear headphones. bit on the pricey side, but worth the purchase if you're an avid listener."
 
         annot = {
             "cats":{
-                "5 Star" : True,
-                "4 Star" : False,
-                "3 Star" : False,
-                "2 Star" : False,
-                "1 Star" : False,
+                '5' : True,
+                '4' : False,
+                '3' : False,
+                '2' : False,
+                '1' : False,
                 }
-        }
+            }
 
         for i in range(1):
             self.nlp.make_doc(exampleText)
@@ -85,14 +85,15 @@ class ReviewModel:
                 losses = self.textcat.update(exampleLst, sgd=optimizer)
                 print(losses)
         if os.path.exists('./models'):
-            os.mkdir(f'./models/reviews_{self.config["version"]}')
+            os.makedirs(f'./models/reviews_{self.config["version"]}', exist_ok=True)
             self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
         else:
-            os.mkdir(f'./models{self.config["version"]}')
-            os.mkdir(f'./models/reviews_{self.config["version"]}')
+            os.makedirs(f'./models{self.config["version"]}')
+            os.makedirs(f'./models/reviews_{self.config["version"]}')
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
     def execute(self):
         self.setup()
+        self.createTrainData()
         self.train()
