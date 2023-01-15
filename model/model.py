@@ -40,7 +40,7 @@ class ReviewModel:
 
 
     def createExample(self):
-        exampleText = "i used to beats headphones but after their partnership with monster cables ended, the quality of their headphones went down hill. i was replacing my beats with new ones every 9-12 months since the headphones keep blowing out. these v-moda headphones are great, never had any issue on the construction and durability of these headphones. the sound quality is top notch and provides a deeper bass sound than beats and bose in-ear headphones. bit on the pricey side, but worth the purchase if you're an avid listener."  
+        exampleText = "i used to beats headphones but after their partnership with monster cables ended, the quality of their headphones went down hill. i was replacing my beats with new ones every 9-12 months since the headphones keep blowing out. these v-moda headphones are great, never had any issue on the construction and durability of these headphones. the sound quality is top notch and provides a deeper bass sound than beats and bose in-ear headphones. bit on the pricey side, but worth the purchase if you're an avid listener."
 
         annot = {
             "cats":{
@@ -77,22 +77,19 @@ class ReviewModel:
             losses = {}
             #Implement batching
             for batch in batches:
-                exampleLst = []
+                exampleList = []
                 for text, annotations in batch:
                     doc = self.nlp.make_doc(text)
                     example = Example.from_dict(doc, annotations)
-                    exampleLst.append(example)
-                losses = self.textcat.update(exampleLst, sgd=optimizer)
+                    exampleList.append(example)
+                losses = self.textcat.update(exampleList, sgd=optimizer)
                 print(losses)
+
         if os.path.exists('./models'):
-            os.mkdir(f'./models/reviews_{self.config["version"]}')
+            os.makedirs(f'./models/reviews_{self.config["version"]}', exist_ok=True)
             self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
         else:
-            os.mkdir(f'./models{self.config["version"]}')
-            os.mkdir(f'./models/reviews_{self.config["version"]}')
+            os.makedirs(f'./models{self.config["version"]}')
+            os.makedirs(f'./models/reviews_{self.config["version"]}')
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
-
-    def execute(self):
-        self.setup()
-        self.train()
