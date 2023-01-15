@@ -93,12 +93,6 @@ class ReviewModel:
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
-
-    def getExample(self):
-        doc2 = self.nlp("Great Energy Level VI tr 4343avel charger! Very compact and fast charging. It is the most convenient product I never seen before ! I like it. I am very happy with this seller . Order packed very well and ship fast .Great energy level VI slimmest travel charger. Courteous service !")
-        return(doc2)
-
-
     def execute(self):
         self.setup()
         self.train()
