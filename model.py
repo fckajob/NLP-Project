@@ -5,6 +5,7 @@ from tqdm import tqdm # loading bar
 from spacy.training.example import Example
 import random
 import spacy
+import os
 
 #spacy.prefer_gpu()
 
