@@ -28,7 +28,7 @@ def get_prediction(data):
 def inference(data: DataModel):
     doc = get_prediction(data)
     response = {
-                'predicted rating': int(max(doc.cats)),
+                'predicted rating': int(max(doc.cats, key = lambda k: doc.cats[k])),
                 'probability': max(doc.cats.values())
                 }
 
