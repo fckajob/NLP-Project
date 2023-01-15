@@ -1,10 +1,12 @@
+import os
 import numpy as np
 import pandas as pd
 import warnings
 import re
+import spacy
+
 from sklearn.model_selection import train_test_split
 from bs4 import BeautifulSoup
-import spacy
 
 
 warnings.filterwarnings('ignore') # Hides warning
