@@ -1,10 +1,12 @@
+import os
 import numpy as np
 import pandas as pd
 import warnings
 import re
+import spacy
+
 from sklearn.model_selection import train_test_split
 from bs4 import BeautifulSoup
-import spacy
 
 
 warnings.filterwarnings('ignore') # Hides warning
@@ -34,7 +36,6 @@ training_data, testing_data = train_test_split(data, test_size=0.2, random_state
 #data.info()
 
 # Normalization : 1- converting all the characters to lowercase
-
 training_data['review_body'] = training_data['review_body'].str.lower()
 training_data['review_headline'] = training_data['review_headline'].str.lower()
 
