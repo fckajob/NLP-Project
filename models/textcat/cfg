@@ -1,0 +1,11 @@
+{
+  "labels":[
+    "1 Star",
+    "2 Star",
+    "3 Star",
+    "4 Star",
+    "5 Star"
+  ],
+  "threshold":0.5,
+  "positive_label":null
+}
