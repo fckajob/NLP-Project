@@ -12,6 +12,7 @@ import os
 config = {
         "threshold": 0.5,
         "model": DEFAULT_SINGLE_TEXTCAT_MODEL,
+        "version": 1
         }
 
 class ReviewModel:
@@ -83,7 +84,13 @@ class ReviewModel:
                     exampleLst.append(example)
                 losses = self.textcat.update(exampleLst, sgd=optimizer)
                 print(losses)
-        self.nlp.to_disk('./models')
+        if os.path.exists('./models'):
+            os.mkdir(f'./models/reviews_{self.config["version"]}')
+            self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
+        else:
+            os.mkdir(f'./models{self.config["version"]}')
+            os.mkdir(f'./models/reviews_{self.config["version"]}')
+            self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
 
