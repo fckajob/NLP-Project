@@ -1,4 +1,4 @@
-from model.model import ReviewModel
+from model import ReviewModel
 
 
 # TODO: Load data from dataloader

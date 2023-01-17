@@ -16,7 +16,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 # Data cleaning
 
 missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
-df = pd.read_table('amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
+df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
 df = df.dropna()
 review_id = len(df["review_id"].unique())
 #print("review_id: " + str(review_id))
@@ -89,4 +89,4 @@ training_data, testing_data = train_test_split(df, test_size=0.2, random_state=2
 #df['review_body']=training_data['review_body']
 
 header = ["star_rating","review_body"]
-training_data.to_csv('output.csv', columns = header)
+training_data.to_csv('./data/output.csv', columns = header)
