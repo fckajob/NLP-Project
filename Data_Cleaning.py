@@ -13,9 +13,12 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
 missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
-df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
+#df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
+# Debug dataset
+df = pd.read_csv('./data/debug_10000.csv')
+df = df[['star_rating', 'review_body']]
 df = df.dropna()
-review_id = len(df["review_id"].unique())
+# review_id = len(df["review_id"].unique())
 
 # Normalization : 1- converting all the characters to lowercase
 df['review_body'] = df['review_body'].str.lower()
@@ -50,8 +53,9 @@ def decontracted(phrase):
     phrase = re.sub(r"\'s", " is", phrase)
     return phrase
 
-for idx,x in enumerate(df['review_body']):
-    df['review_body'][idx] = decontracted(x)
+# What is this for?
+# for idx, x in enumerate(df['review_body']):
+#     df['review_body'][idx] = (x)
 
 
 # Train/Test Split
@@ -59,5 +63,5 @@ training_data, testing_data = train_test_split(df, test_size=0.2, random_state=2
 
 
 header = ["star_rating","review_body"]
-training_data.to_csv('./data/train.csv', columns = header)
-testing_data.to_csv('./data/test.csv', columns = header)
+training_data.to_csv('./data/train.csv', columns = header, index=False)
+testing_data.to_csv('./data/test.csv', columns = header, index=False)

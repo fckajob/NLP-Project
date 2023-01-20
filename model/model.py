@@ -65,10 +65,9 @@ class ReviewModel:
 
     #Creates finished annotated training data as a list of Example objects
     def createTrainData(self, sample_size):
-        data = self.train        
+        data = self.train
         input_list = list()
         for index, row in data.sample(n=sample_size).iterrows():
-            
              # Only take valid labels
             if str(row['star_rating']).strip() not in self.allowed_labels or len(str(row['review_body'])) < 3:
                 continue
@@ -83,7 +82,6 @@ class ReviewModel:
     #Training
         optimizer = self.nlp.resume_training()
         self.TRAIN_DATA = list()
-
 
         for index, row in self.train.sample(n=100000).iterrows():
             # Only take valid labels
@@ -109,6 +107,7 @@ class ReviewModel:
                     exampleLst.append(example)
                 losses = self.textcat.update(exampleLst, sgd=optimizer)
             print(losses)
+
         if os.path.exists('./models'):
             os.makedirs(f'./models/reviews_{self.config["version"]}', exist_ok=True)
             self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
