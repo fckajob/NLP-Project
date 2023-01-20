@@ -1,18 +1,21 @@
 # TODO: Spacy Modelimport spacy
+import random
+import spacy
+import os
+
+from spacy.scorer import Scorer
 from spacy.pipeline.textcat import DEFAULT_SINGLE_TEXTCAT_MODEL
 from spacy.util import minibatch
 from tqdm import tqdm # loading bar
 from spacy.training.example import Example
-import random
-import spacy
-import os
+
 
 
 
 config = {
         "threshold": 0.5,
         "model": DEFAULT_SINGLE_TEXTCAT_MODEL,
-        "version": 1
+        "version": 2
         }
 
 class ReviewModel:
@@ -22,7 +25,6 @@ class ReviewModel:
         self.nlp =  spacy.load("en_core_web_sm")
         self.config = config
         self.textcat = self.nlp.add_pipe("textcat")
-        self.TRAIN_DATA = list()
         self.train = train
         self.test = test
         self.allowed_labels = ['1','2','3','4','5']
@@ -44,7 +46,7 @@ class ReviewModel:
         self.textcat.add_label("5")
 
         #Initialize the model with a couple of records as training data
-        initial_data = self.createTrainData(5000)
+        initial_data = self.createTrainData(10)
         self.textcat.initialize(lambda: initial_data, nlp=self.nlp)
 
 
@@ -63,7 +65,7 @@ class ReviewModel:
         annot['cats'][rating] = True
         return annot
 
-    #Creates finished annotated training data as a list of Example objects
+    #Only used to create data required for initialisation of textcat
     def createTrainData(self, sample_size):
         data = self.train
         input_list = list()
@@ -81,22 +83,23 @@ class ReviewModel:
     def full_training(self):
     #Training
         optimizer = self.nlp.resume_training()
-        self.TRAIN_DATA = list()
+        # Spacy requires certain form of training data => TRAIN_DATA
+        TRAIN_DATA = list()
 
-        for index, row in self.train.sample(n=100000).iterrows():
+        for index, row in self.train.sample(n=len(self.train)).iterrows():
             # Only take valid labels
             if str(row['star_rating']).strip() not in self.allowed_labels or len(str(row['review_body']).strip()) < 3:
                 continue
             annotation = self.createAnnotation(str(row['star_rating']).strip())
-            self.TRAIN_DATA.append((str(row['review_body']).strip(), annotation))
+            TRAIN_DATA.append((str(row['review_body']).strip(), annotation))
 
         for itn in tqdm(range(30)):
             print()
             print("Starting iteration " + str(itn))
 
-            random.shuffle(self.TRAIN_DATA)
+            random.shuffle(TRAIN_DATA)
             #create batches of training data
-            batches = minibatch(self.TRAIN_DATA, size=100)
+            batches = minibatch(TRAIN_DATA, size=100)
             losses = {}
             #Implement batching
             for batch in batches:
@@ -121,9 +124,28 @@ class ReviewModel:
         self.setup()
         self.full_training()
 
-    def evaluation(self):
-        pass
+    def evaluation(self, model):
+        TEST_DATA = list()
+        for index, row in self.test.sample(n=len(self.test)).iterrows():
+        # Only take valid labels
+            if str(row['star_rating']).strip() not in self.allowed_labels or len(str(row['review_body']).strip()) < 3:
+                continue
+            annotation = self.createAnnotation(str(row['star_rating']).strip())
+            TEST_DATA.append((str(row['review_body']).strip(), annotation))
+
+        scorer = Scorer()
+        example = []
+        batches = minibatch(TEST_DATA, size=100)
+        for batch in batches:
+            for input_, annotations in batch:
+                pred = model(input_)
+                print(pred,annotations)
+                temp = Example.from_dict(pred, dict.fromkeys(annotations))
+                example.append(temp)
+            scores = scorer.score(example)
+        return scores
 
     def evaluate(self):
         self.setup()
-        self.createTrainData(self.test)
+        scores = self.evaluate(self.nlp)
+        return scores

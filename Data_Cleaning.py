@@ -57,11 +57,30 @@ def decontracted(phrase):
 # for idx, x in enumerate(df['review_body']):
 #     df['review_body'][idx] = (x)
 
+# Create balanced data
+df_grouped = df.groupby('star_rating').count()
+min_ratings = df_grouped['review_body'].min()
+max_ratings = df_grouped['review_body'].max()
+
+df_r1 = df[df['star_rating'] == 1].sample(n = min_ratings, random_state=1)
+df_r2 = df[df['star_rating'] == 2].sample(n = min_ratings, random_state=1)
+df_r3 = df[df['star_rating'] == 3].sample(n = min_ratings, random_state=1)
+df_r4 = df[df['star_rating'] == 4].sample(n = min_ratings, random_state=1)
+df_r5 = df[df['star_rating'] == 5].sample(n = min_ratings, random_state=1)
+
+assert(len(df_r1) == len(df_r2) == len(df_r3) == len(df_r4) == len(df_r5))
+
+df_balanced = pd.concat([df_r1, df_r2, df_r3, df_r4, df_r5])
+
 
 # Train/Test Split
 training_data, testing_data = train_test_split(df, test_size=0.2, random_state=25)
+train_balanced, test_balanced = train_test_split(df_balanced, test_size=0.2, random_state=25)
 
+training_data.to_csv('./data/train.csv', index=False)
+testing_data.to_csv('./data/test.csv', index=False)
 
-header = ["star_rating","review_body"]
-training_data.to_csv('./data/train.csv', columns = header, index=False)
-testing_data.to_csv('./data/test.csv', columns = header, index=False)
+df_balanced.to_csv('./data/balanced.csv', index=False)
+train_balanced.to_csv('./data/train_balanced.csv',  index=False)
+test_balanced.to_csv('./data/test_balanced.csv',  index=False)
+

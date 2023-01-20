@@ -16,7 +16,7 @@ class DataModel(BaseModel):
     text: str
 
 
-nlp = spacy.load('./models/reviews_1')
+nlp = spacy.load('./models/reviews_2')
 def get_prediction(data):
     doc = nlp(data.text)
     logger.info(doc.cats)
