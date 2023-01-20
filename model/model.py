@@ -8,6 +8,7 @@ from spacy.pipeline.textcat import DEFAULT_SINGLE_TEXTCAT_MODEL
 from spacy.util import minibatch
 from tqdm import tqdm # loading bar
 from spacy.training.example import Example
+from sklearn.metrics import f1_score, accuracy_score, roc_curve, auc
 
 
 
@@ -126,24 +127,32 @@ class ReviewModel:
 
     def evaluation(self, model):
         TEST_DATA = list()
+        y_true = []
         for index, row in self.test.sample(n=len(self.test)).iterrows():
         # Only take valid labels
             if str(row['star_rating']).strip() not in self.allowed_labels or len(str(row['review_body']).strip()) < 3:
                 continue
+            y_true.append(int(row['star_rating']))
             annotation = self.createAnnotation(str(row['star_rating']).strip())
             TEST_DATA.append((str(row['review_body']).strip(), annotation))
 
         scorer = Scorer()
-        example = []
-        batches = minibatch(TEST_DATA, size=100)
-        for batch in batches:
-            for input_, annotations in batch:
-                pred = model(input_)
-                print(pred,annotations)
-                temp = Example.from_dict(pred, dict.fromkeys(annotations))
-                example.append(temp)
-            scores = scorer.score(example)
-        return scores
+        y_pred = []
+        for input_, annotations in TEST_DATA:
+            pred = model(input_)
+            y_pred.append(int(max(pred.cats, key = lambda k: pred.cats[k])))
+
+        f1 = f1_score(y_true, y_pred, average='weighted')
+        accuracy = accuracy_score(y_true, y_pred, normalize=True)
+        fpr, tpr, thresholds = roc_curve(y_true, y_pred, pos_label=5)
+        area_under_the_curve = auc(fpr, tpr)
+
+        return {
+            "f1_score": f1,
+            "accuracy": accuracy,
+            "AUC": area_under_the_curve,
+            "model_version": config['version']
+        }
 
     def evaluate(self):
         self.setup()

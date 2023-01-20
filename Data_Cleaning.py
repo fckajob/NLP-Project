@@ -14,6 +14,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
 #df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
+# TODO: Run full dataset once sure
 # Debug dataset
 df = pd.read_csv('./data/debug_10000.csv')
 df = df[['star_rating', 'review_body']]
@@ -77,10 +78,10 @@ df_balanced = pd.concat([df_r1, df_r2, df_r3, df_r4, df_r5])
 training_data, testing_data = train_test_split(df, test_size=0.2, random_state=25)
 train_balanced, test_balanced = train_test_split(df_balanced, test_size=0.2, random_state=25)
 
+# Save to csv
 training_data.to_csv('./data/train.csv', index=False)
 testing_data.to_csv('./data/test.csv', index=False)
 
-df_balanced.to_csv('./data/balanced.csv', index=False)
 train_balanced.to_csv('./data/train_balanced.csv',  index=False)
 test_balanced.to_csv('./data/test_balanced.csv',  index=False)
 
