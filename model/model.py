@@ -14,25 +14,26 @@ from sklearn.metrics import f1_score, accuracy_score, roc_curve, auc
 
 
 config = {
-        "threshold": 0.5,
-        "model": DEFAULT_SINGLE_TEXTCAT_MODEL,
-        "version": 2
+        'threshold': 0.5,
+        'model': DEFAULT_SINGLE_TEXTCAT_MODEL,
+        'version': 1
+        'data_used': 'balanced'
         }
 
 class ReviewModel:
     def __init__(self, train, test):
         #Enable if GPU is preferred
         #spacy.prefer_gpu()
-        self.nlp =  spacy.load("en_core_web_sm")
+        self.nlp =  spacy.load('en_core_web_sm')
         self.config = config
-        self.textcat = self.nlp.add_pipe("textcat")
+        self.textcat = self.nlp.add_pipe('textcat')
         self.train = train
         self.test = test
         self.allowed_labels = ['1','2','3','4','5']
 
 
     # Create Text categorizer instance
-    #textcat = nlp.add_pipe("textcat",config=config)
+    #textcat = nlp.add_pipe('textcat',config=config)
 
     def setup(self):
         #Disable all other pipes except Text Categorizer
@@ -40,11 +41,11 @@ class ReviewModel:
         self.nlp.disable_pipes(*other_pipes)
 
         # Add our desired labels for the Text Categorizer
-        self.textcat.add_label("1")
-        self.textcat.add_label("2")
-        self.textcat.add_label("3")
-        self.textcat.add_label("4")
-        self.textcat.add_label("5")
+        self.textcat.add_label('1')
+        self.textcat.add_label('2')
+        self.textcat.add_label('3')
+        self.textcat.add_label('4')
+        self.textcat.add_label('5')
 
         #Initialize the model with a couple of records as training data
         initial_data = self.createTrainData(10)
@@ -54,7 +55,7 @@ class ReviewModel:
     #Returns a annotation dict in our desired format
     def createAnnotation(self, rating: str):
         annot = {
-            "cats":{
+            'cats':{
                 '5' : False,
                 '4' : False,
                 '3' : False,
@@ -96,7 +97,7 @@ class ReviewModel:
 
         for itn in tqdm(range(30)):
             print()
-            print("Starting iteration " + str(itn))
+            print('Starting iteration ' + str(itn))
 
             random.shuffle(TRAIN_DATA)
             #create batches of training data
@@ -113,12 +114,12 @@ class ReviewModel:
             print(losses)
 
         if os.path.exists('./models'):
-            os.makedirs(f'./models/reviews_{self.config["version"]}', exist_ok=True)
-            self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
+            os.makedirs(f'./models/reviews_{self.config['version']_{self.config['data_used']}}', exist_ok=True)
+            self.nlp.to_disk(f'./models/./reviews_{self.config['version']}')
         else:
-            os.makedirs(f'./models{self.config["version"]}')
-            os.makedirs(f'./models/reviews_{self.config["version"]}')
-            self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
+            os.makedirs(f'./models{self.config['version']}')
+            os.makedirs(f'./models/reviews_{self.config['version']}')
+            self.nlp.to_disk(f'./models/reviews_{self.config['version']}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
     def executeTraining(self):
@@ -148,10 +149,11 @@ class ReviewModel:
         area_under_the_curve = auc(fpr, tpr)
 
         return {
-            "f1_score": f1,
-            "accuracy": accuracy,
-            "AUC": area_under_the_curve,
-            "model_version": config['version']
+            'f1_score': f1,
+            'accuracy': accuracy,
+            'AUC': area_under_the_curve,
+            'model_version': config['version']
+            'data_used': config['data_used']
         }
 
     def evaluate(self):

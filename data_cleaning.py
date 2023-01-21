@@ -13,10 +13,10 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
 missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
-#df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
+df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
 # TODO: Run full dataset once sure
 # Debug dataset
-df = pd.read_csv('./data/debug_10000.csv')
+#df = pd.read_csv('./data/debug_10000.csv')
 df = df[['star_rating', 'review_body']]
 df = df.dropna()
 # review_id = len(df["review_id"].unique())
@@ -54,9 +54,8 @@ def decontracted(phrase):
     phrase = re.sub(r"\'s", " is", phrase)
     return phrase
 
-# What is this for?
-# for idx, x in enumerate(df['review_body']):
-#     df['review_body'][idx] = (x)
+for idx,x in enumerate(df['review_body']):
+    df['review_body'][idx] = decontracted(x)
 
 # Create balanced data
 df_grouped = df.groupby('star_rating').count()
