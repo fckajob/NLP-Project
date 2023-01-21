@@ -26,9 +26,9 @@ df['review_body'] = df['review_body'].str.lower()
 
 
 # Normalization : 2- converting all whitespace and punctuation into a single space to get rid of any inconsistencies.
-for idx, x in enumerate(df['review_body']):
-    df['review_body'][idx] = " ".join(x.split())
-    df['review_body'][idx] = re.sub(r'[^\w\s]', '', x)
+# for idx, x in enumerate(df['review_body']):
+#     df['review_body'][idx] = " ".join(x.split())
+#     df['review_body'][idx] = re.sub(r'[^\w\s]', '', x)
 
 
 # Noise Removal: Removing HTML Tags (using BeautifulSoup’s)
