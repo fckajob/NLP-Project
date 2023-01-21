@@ -14,10 +14,10 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
 df = pd.read_table('./data/amazon_reviews_us_Electronics_v1_00.tsv', error_bad_lines=False, na_values=missing_value)
+df = df[['star_rating', 'review_body']]
 # TODO: Run full dataset once sure
 # Debug dataset
-#df = pd.read_csv('./data/debug_10000.csv')
-df = df[['star_rating', 'review_body']]
+#df = df[:100000]
 df = df.dropna()
 # review_id = len(df["review_id"].unique())
 
@@ -57,6 +57,7 @@ def decontracted(phrase):
 for idx,x in enumerate(df['review_body']):
     df['review_body'][idx] = decontracted(x)
 
+
 # Create balanced data
 df_grouped = df.groupby('star_rating').count()
 min_ratings = df_grouped['review_body'].min()
@@ -78,9 +79,11 @@ training_data, testing_data = train_test_split(df, test_size=0.2, random_state=2
 train_balanced, test_balanced = train_test_split(df_balanced, test_size=0.2, random_state=25)
 
 # Save to csv
+df.to_csv('./data/debug_10000.csv', index=False)
 training_data.to_csv('./data/train.csv', index=False)
 testing_data.to_csv('./data/test.csv', index=False)
 
+df_balanced.to_csv('./data/balanced_full.csv', index=False)
 train_balanced.to_csv('./data/train_balanced.csv',  index=False)
 test_balanced.to_csv('./data/test_balanced.csv',  index=False)
 
