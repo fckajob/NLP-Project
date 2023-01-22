@@ -10,14 +10,11 @@ warnings.filterwarnings('ignore') # Hides warning
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# Directly reading the amazon .tsv caused errors in data at the end, without concrete cause
-missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
-#df = pd.read_csv('./data/amazon_reviews_us_Electronics_v1_00.tsv', sep='\t', error_bad_lines=False, na_values=missing_value)
-#df = df.dropna()
-df = pd.read_csv('./data/dataset_raw_2.csv')
-# TODO: Run full dataset once sure
-# Debug dataset
-#df = pd.read_csv('./data/debug_short.csv')
+# Directly reading the amazon .tsv caused errors in data at the end, without concrete cause =>
+# missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
+# df = pd.read_csv('./data/amazon_reviews_us_Electronics_v1_00.tsv', sep='\t', error_bad_lines=False, na_values=missing_value)
+df = df.dropna()
+#df = pd.read_csv('./data/dataset_raw.csv')
 df = df[['star_rating', 'review_body']]
 
 # Normalization : 1- converting all the characters to lowercase
