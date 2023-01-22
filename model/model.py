@@ -3,7 +3,6 @@ import random
 import spacy
 import os
 
-from spacy.scorer import Scorer
 from spacy.pipeline.textcat import DEFAULT_SINGLE_TEXTCAT_MODEL
 from spacy.util import minibatch
 from tqdm import tqdm # loading bar
@@ -137,7 +136,6 @@ class ReviewModel:
             annotation = self.createAnnotation(str(row['star_rating']).strip())
             TEST_DATA.append((str(row['review_body']).strip(), annotation))
 
-        scorer = Scorer()
         y_pred = []
         for input_, annotations in TEST_DATA:
             pred = model(input_)
