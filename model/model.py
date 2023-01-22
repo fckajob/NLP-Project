@@ -16,7 +16,7 @@ from sklearn.metrics import f1_score, accuracy_score, roc_curve, auc
 config = {
         'threshold': 0.5,
         'model': DEFAULT_SINGLE_TEXTCAT_MODEL,
-        'version': 1
+        'version': 1,
         'data_used': 'balanced'
         }
 
@@ -114,12 +114,12 @@ class ReviewModel:
             print(losses)
 
         if os.path.exists('./models'):
-            os.makedirs(f'./models/reviews_{self.config['version']_{self.config['data_used']}}', exist_ok=True)
-            self.nlp.to_disk(f'./models/./reviews_{self.config['version']}')
+            os.makedirs(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}', exist_ok=True)
+            self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
         else:
-            os.makedirs(f'./models{self.config['version']}')
-            os.makedirs(f'./models/reviews_{self.config['version']}')
-            self.nlp.to_disk(f'./models/reviews_{self.config['version']}')
+            os.makedirs(f'./models{self.config["version"]}')
+            os.makedirs(f'./models/reviews_{self.config["version"]}')
+            self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
     def executeTraining(self):
@@ -152,7 +152,7 @@ class ReviewModel:
             'f1_score': f1,
             'accuracy': accuracy,
             'AUC': area_under_the_curve,
-            'model_version': config['version']
+            'model_version': config['version'],
             'data_used': config['data_used']
         }
 
