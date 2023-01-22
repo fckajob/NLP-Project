@@ -7,8 +7,8 @@ from model import ReviewModel
 # TODO: Load data from dataloader
 
 if __name__ == '__main__':
-    train_data = pd.read_csv('./data/train.csv')
-    test_data = pd.read_csv('./data/test.csv')
+    train_data = pd.read_csv('./data/train_balanced.csv')
+    test_data = pd.read_csv('./data/test_balanced.csv')
     model = ReviewModel(train=train_data, test=test_data)
     model.executeTraining()
 

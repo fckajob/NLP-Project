@@ -13,8 +13,10 @@ warnings.filterwarnings("ignore", category=UserWarning)
 # Directly reading the amazon .tsv caused errors in data at the end, without concrete cause =>
 # missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
 # df = pd.read_csv('./data/amazon_reviews_us_Electronics_v1_00.tsv', sep='\t', error_bad_lines=False, na_values=missing_value)
-df = df.dropna()
-#df = pd.read_csv('./data/dataset_raw.csv')
+# df = df.dropna()
+
+# If data not available yet, please run data_loader.py
+df = pd.read_csv('./data/dataset_raw.csv')
 df = df[['star_rating', 'review_body']]
 
 # Normalization : 1- converting all the characters to lowercase
