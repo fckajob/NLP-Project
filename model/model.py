@@ -20,12 +20,16 @@ config = {
         }
 
 class ReviewModel:
-    def __init__(self, train, test):
+    def __init__(self, train, test, spacy_model, evaluate_only: bool):
         #Enable if GPU is preferred
-        #spacy.prefer_gpu()
-        self.nlp =  spacy.load('en_core_web_sm')
+        spacy.prefer_gpu()
+        if evaluate_only == True:
+            self.nlp = spacy_model
+        else:
+            self.nlp =  spacy.load('en_core_web_sm')
+            self.textcat = self.nlp.add_pipe('textcat')
+        
         self.config = config
-        self.textcat = self.nlp.add_pipe('textcat')
         self.train = train
         self.test = test
         self.allowed_labels = ['1','2','3','4','5']
@@ -81,13 +85,13 @@ class ReviewModel:
         return input_list
 
 
-    def full_training(self):
+    def full_training(self, sample_size: int):
     #Training
         optimizer = self.nlp.resume_training()
         # Spacy requires certain form of training data => TRAIN_DATA
         TRAIN_DATA = list()
 
-        for index, row in self.train.sample(n=len(self.train)).iterrows():
+        for index, row in self.train.sample(n=sample_size).iterrows():
             # Only take valid labels
             if str(row['star_rating']).strip() not in self.allowed_labels or len(str(row['review_body']).strip()) < 3:
                 continue
@@ -121,9 +125,9 @@ class ReviewModel:
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
-    def executeTraining(self):
+    def executeTraining(self, sample_size: int):
         self.setup()
-        self.full_training()
+        self.full_training(sample_size)
 
     def evaluation(self, model):
         TEST_DATA = list()
@@ -155,6 +159,6 @@ class ReviewModel:
         }
 
     def evaluate(self):
-        self.setup()
-        scores = self.evaluate(self.nlp)
+        #self.setup()
+        scores = self.evaluation(self.nlp)
         return scores
