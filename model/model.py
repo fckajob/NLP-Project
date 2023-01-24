@@ -100,10 +100,10 @@ class ReviewModel:
 
         for itn in tqdm(range(30)):
             print()
-            print('Starting iteration ' + str(itn))
+            print('Starting Epoch ' + str(itn))
 
             random.shuffle(TRAIN_DATA)
-            #create batches of training data
+            #create batches of training data with batch_size = size
             batches = minibatch(TRAIN_DATA, size=100)
             losses = {}
             #Implement batching
@@ -113,6 +113,7 @@ class ReviewModel:
                     doc = self.nlp.make_doc(text)
                     example = Example.from_dict(doc, annotations)
                     exampleLst.append(example)
+                #One Iteration, because the weights are updated
                 losses = self.textcat.update(exampleLst, sgd=optimizer)
             print(losses)
 
