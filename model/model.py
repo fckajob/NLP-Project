@@ -16,7 +16,7 @@ config = {
         'threshold': 0.5,
         'model': DEFAULT_SINGLE_TEXTCAT_MODEL,
         'version': 1,
-        'data_used': 'balanced_20000_per_class'
+        'data_used': 'balanced_full'
         }
 
 class ReviewModel:
@@ -119,7 +119,7 @@ class ReviewModel:
         if os.path.exists('./models'):
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}')
         else:
-            os.makedirs(f'./models', exist_ok=True)
+            os.makedirs(f'./models')
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
