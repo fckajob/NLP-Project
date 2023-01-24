@@ -8,7 +8,7 @@ from model import ReviewModel
 
 if __name__ == '__main__':
     train_data = pd.read_csv('./data/train_balanced.csv')
-    test_data = pd.read_csv('./data/test_balanced.csv')
+    test_data = pd.read_csv('./data/testing.csv')
     model = ReviewModel(train=train_data, test=test_data, spacy_model=None, evaluate_only=False)
     sample_size = len(train_data)
     model.executeTraining(sample_size=100)

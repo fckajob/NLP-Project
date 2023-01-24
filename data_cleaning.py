@@ -56,6 +56,7 @@ def decontracted(phrase):
 for idx, row in enumerate(df['review_body']):
     df['review_body'][idx] = decontracted(row)
 
+df.to_csv('./data/df_cleaned.csv')
 # Since in our use case the outcome could be dependent on the stop word (e.g. is vs. isn't) we keep them in 
 # nltk.download('stopwords')
 # from nltk.corpus import stopwords
@@ -97,15 +98,13 @@ testing_data = df[train_size:]
 # train_size_balanced = (int(len(df_balanced)*0.8))
 
 # To also have balanced datasets for train and test split
-# train_balanced = df_balanced[:train_size_balanced]
-# test_balanced = df_balanced[train_size_balanced:]
 train_balanced = df_train_balanced.sample(frac=1, random_state=1)
 
 # Save to csv
-# training_data.to_csv('./data/train.csv', index=False)
-# testing_data.to_csv('./data/test.csv', index=False)
+training_data.to_csv('./data/train.csv', index=False)
+testing_data.to_csv('./data/test.csv', index=False)
 
 df_train_balanced.to_csv('./data/balanced_full.csv', index=False)
 train_balanced.to_csv('./data/train_balanced.csv',  index=False)
-df_for_testing.to_csv('./data/test_balanced.csv',  index=False)
+df_for_testing.to_csv('./data/testing.csv',  index=False)
 
