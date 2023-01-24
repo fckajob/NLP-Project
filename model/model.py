@@ -16,14 +16,14 @@ config = {
         'threshold': 0.5,
         'model': DEFAULT_SINGLE_TEXTCAT_MODEL,
         'version': 1,
-        'data_used': 'balanced'
+        'data_used': 'balanced_20000_per_class'
         }
 
 class ReviewModel:
-    def __init__(self, train, test, spacy_model, evaluate_only: bool):
+    def __init__(self, train, test, spacy_model, evaluate_only:bool):
         #Enable if GPU is preferred
         spacy.prefer_gpu()
-        if evaluate_only == True:
+        if evaluate_only:
             self.nlp = spacy_model
         else:
             self.nlp =  spacy.load('en_core_web_sm')
@@ -117,12 +117,10 @@ class ReviewModel:
             print(losses)
 
         if os.path.exists('./models'):
-            os.makedirs(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}', exist_ok=True)
-            self.nlp.to_disk(f'./models/./reviews_{self.config["version"]}')
+            self.nlp.to_disk(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}')
         else:
-            os.makedirs(f'./models{self.config["version"]}')
-            os.makedirs(f'./models/reviews_{self.config["version"]}')
-            self.nlp.to_disk(f'./models/reviews_{self.config["version"]}')
+            os.makedirs(f'./models')
+            self.nlp.to_disk(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 
     def executeTraining(self, sample_size: int):

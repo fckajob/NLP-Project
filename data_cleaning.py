@@ -70,16 +70,20 @@ for idx, row in enumerate(df['review_body']):
 df_grouped = df.groupby('star_rating').count()
 min_ratings = df_grouped['review_body'].min()
 max_ratings = df_grouped['review_body'].max()
+reduced_number = 25000
 
-df_r1 = df[df['star_rating'] == 1].sample(n = min_ratings, random_state=1)
-df_r2 = df[df['star_rating'] == 2].sample(n = min_ratings, random_state=1)
-df_r3 = df[df['star_rating'] == 3].sample(n = min_ratings, random_state=1)
-df_r4 = df[df['star_rating'] == 4].sample(n = min_ratings, random_state=1)
-df_r5 = df[df['star_rating'] == 5].sample(n = min_ratings, random_state=1)
+df_for_testing = df[:25000]
+df_for_training = df[25000:]
+
+df_r1 = df_for_training[df_for_training['star_rating'] == 1].sample(n = reduced_number, random_state=1)
+df_r2 = df_for_training[df_for_training['star_rating'] == 2].sample(n = reduced_number, random_state=1)
+df_r3 = df_for_training[df_for_training['star_rating'] == 3].sample(n = reduced_number, random_state=1)
+df_r4 = df_for_training[df_for_training['star_rating'] == 4].sample(n = reduced_number, random_state=1)
+df_r5 = df_for_training[df_for_training['star_rating'] == 5].sample(n = reduced_number, random_state=1)
 
 assert(len(df_r1) == len(df_r2) == len(df_r3) == len(df_r4) == len(df_r5))
 
-df_balanced = pd.concat([df_r1, df_r2, df_r3, df_r4, df_r5])
+df_train_balanced = pd.concat([df_r1, df_r2, df_r3, df_r4, df_r5])
 
 # Train/Test Split
 # training_data, testing_data = train_test_split(df, test_size=0.2, random_state=25)
@@ -90,19 +94,18 @@ train_size = int(len(df)*0.8)
 training_data = df[:train_size]
 testing_data = df[train_size:]
 
-train_size_balanced = (int(len(df_balanced)*0.8))
+# train_size_balanced = (int(len(df_balanced)*0.8))
 
 # To also have balanced datasets for train and test split
-train_balanced = pd.concat([df_r1[:train_size_balanced], df_r2[:train_size_balanced], df_r3[:train_size_balanced], df_r4[:train_size_balanced], df_r5[:train_size_balanced]])
-test_balanced = pd.concat([df_r1[train_size_balanced:], df_r2[train_size_balanced:], df_r3[train_size_balanced:], df_r4[train_size_balanced:], df_r5[train_size_balanced:]])
-train_balanced = train_balanced.sample(frac=1, random_state=1).reset_index()
-test_balanced = test_balanced.sample(frac=1, random_state=1).reset_index()
+# train_balanced = df_balanced[:train_size_balanced]
+# test_balanced = df_balanced[train_size_balanced:]
+train_balanced = df_train_balanced.sample(frac=1, random_state=1)
 
 # Save to csv
-training_data.to_csv('./data/train.csv', index=False)
-testing_data.to_csv('./data/test.csv', index=False)
+# training_data.to_csv('./data/train.csv', index=False)
+# testing_data.to_csv('./data/test.csv', index=False)
 
-df_balanced.to_csv('./data/balanced_full.csv', index=False)
+df_train_balanced.to_csv('./data/balanced_full.csv', index=False)
 train_balanced.to_csv('./data/train_balanced.csv',  index=False)
-test_balanced.to_csv('./data/test_balanced.csv',  index=False)
+df_for_testing.to_csv('./data/test_balanced.csv',  index=False)
 
