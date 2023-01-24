@@ -119,7 +119,7 @@ class ReviewModel:
         if os.path.exists('./models'):
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}')
         else:
-            os.makedirs(f'./models')
+            os.makedirs(f'./models', exist_ok=True)
             self.nlp.to_disk(f'./models/reviews_{self.config["version"]}_{self.config["data_used"]}')
     ##print('Iterations',iterations,'ExecutionTime',time.time()-start)
 

@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import os
 
 from model import ReviewModel
 
@@ -18,5 +19,10 @@ if __name__ == '__main__':
 
     json_object = json.dumps(scores, indent=4)
 
-    with open("./eval/model_evaluation_balanced_150000.json", "w") as f:
-        f.write(json_object)
+    if os.path.exists('../eval'):
+        with open("../eval/model_evaluation_balanced_150000.json", "w") as f:
+            f.write(json_object)
+    else:
+        os.mkdir('../eval',  exist_ok=True)
+        with open("../eval/model_evaluation_balanced_150000.json", "w") as f:
+            f.write(json_object)
