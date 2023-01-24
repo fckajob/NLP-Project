@@ -1,0 +1,3 @@
+[submodule "NLP-FRONTEND"]
+	path = NLP-FRONTEND
+	url = https://github.com/jasmin-mn/NLP-FRONTEND.git
