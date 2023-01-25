@@ -16,7 +16,7 @@ config = {
         'threshold': 0.5,
         'model': DEFAULT_SINGLE_TEXTCAT_MODEL,
         'version': 1,
-        'data_used': 'balanced_full'
+        'data_used': 'balanced_50000_per_class'
         }
 
 class ReviewModel:
