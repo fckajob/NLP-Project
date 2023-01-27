@@ -28,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-nlp = spacy.load('./models/reviews_1_balanced')
+nlp = spacy.load('./models/reviews_1_balanced_full')
 def get_prediction(data):
     doc = nlp(data.text)
     logger.info(doc.cats)
