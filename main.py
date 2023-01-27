@@ -15,8 +15,20 @@ app = FastAPI()
 class DataModel(BaseModel):
     text: str
 
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
 
-nlp = spacy.load('./models/reviews_1')
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+nlp = spacy.load('./models/reviews_1_balanced')
 def get_prediction(data):
     doc = nlp(data.text)
     logger.info(doc.cats)
@@ -28,7 +40,7 @@ def get_prediction(data):
 def inference(data: DataModel):
     doc = get_prediction(data)
     response = {
-                'predicted rating': int(max(doc.cats, key = lambda k: doc.cats[k])),
+                'predicted_rating': int(max(doc.cats, key = lambda k: doc.cats[k])),
                 'probability': max(doc.cats.values())
                 }
 

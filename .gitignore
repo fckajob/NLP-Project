@@ -4,3 +4,10 @@ venv
 
 # Models folder
 models
+
+# Data folder
+data
+
+plots
+
+eval
