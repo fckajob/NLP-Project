@@ -15,6 +15,18 @@ app = FastAPI()
 class DataModel(BaseModel):
     text: str
 
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 nlp = spacy.load('./models/reviews_1_balanced')
 def get_prediction(data):
