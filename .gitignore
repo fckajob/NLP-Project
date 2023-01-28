@@ -2,6 +2,8 @@ venv
 .DS_Store
 .idea
 
+node_modules
+
 # Models folder
 models
 
