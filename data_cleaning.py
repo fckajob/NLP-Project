@@ -78,14 +78,15 @@ min_ratings = df_grouped['review_body'].min()
 max_ratings = df_grouped['review_body'].max()
 reduced_number = 25000
 
+size = min_ratings-25000
 df_for_testing = df[:25000]
 df_for_training = df[25000:]
 
-df_r1 = df_for_training[df_for_training['star_rating'] == 1].sample(n = reduced_number, random_state=1)
-df_r2 = df_for_training[df_for_training['star_rating'] == 2].sample(n = reduced_number, random_state=1)
-df_r3 = df_for_training[df_for_training['star_rating'] == 3].sample(n = reduced_number, random_state=1)
-df_r4 = df_for_training[df_for_training['star_rating'] == 4].sample(n = reduced_number, random_state=1)
-df_r5 = df_for_training[df_for_training['star_rating'] == 5].sample(n = reduced_number, random_state=1)
+df_r1 = df_for_training[df_for_training['star_rating'] == 1].sample(n = size, random_state=1)
+df_r2 = df_for_training[df_for_training['star_rating'] == 2].sample(n = size, random_state=1)
+df_r3 = df_for_training[df_for_training['star_rating'] == 3].sample(n = size, random_state=1)
+df_r4 = df_for_training[df_for_training['star_rating'] == 4].sample(n = size, random_state=1)
+df_r5 = df_for_training[df_for_training['star_rating'] == 5].sample(n = size, random_state=1)
 
 assert(len(df_r1) == len(df_r2) == len(df_r3) == len(df_r4) == len(df_r5))
 
