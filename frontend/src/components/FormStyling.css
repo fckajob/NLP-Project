@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Merienda+One&display=swap');
+
+body{
+
+    background-color:#00008B;
+    height: 100vh;
+    overflow: hidden;
+    
+}
+
+.title{
+
+    color: #e2eaea;
+    font-size: 80px;
+    margin-left:460px;
+    padding-top: 10px;
+    font-family: 'Merienda One', cursive;
+
+}
+
+
+.form{
+
+    width: 200vh;
+    margin-left: 700px;
+    position: absolute;
+    bottom: 580px;
+}
+
+.input{
+    width: 40vh;
+    height:45px ;
+    font-family: 'Merienda One', cursive;
+    font-size: 22px;
+    border-style: ridge;
+    border-color: black;
+}
+
+.button{
+margin-left: 5px;
+position: absolute;
+height: 50px;
+font-weight: bold;
+font-family: 'Merienda One', cursive;
+bottom: 1px;
+
+}
+.probability{
+
+color: azure;
+position: absolute;
+left: 1100px;
+bottom: 389px;
+font-family: 'Merienda One', cursive;
+}
+.probability1{
+    margin-left: 15px;
+    font-family: 'Merienda One', cursive;
+    color: yellow;
+}
