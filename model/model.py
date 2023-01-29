@@ -15,8 +15,8 @@ from sklearn.metrics import f1_score, accuracy_score, roc_curve, auc
 config = {
         'threshold': 0.5,
         'model': DEFAULT_SINGLE_TEXTCAT_MODEL,
-        'version': 1,
-        'data_used': 'balanced_50000_per_class'
+        'version': 2,
+        'data_used': 'balanced_full'
         }
 
 class ReviewModel:
@@ -28,7 +28,7 @@ class ReviewModel:
         else:
             self.nlp =  spacy.load('en_core_web_sm')
             self.textcat = self.nlp.add_pipe('textcat')
-        
+
         self.config = config
         self.train = train
         self.test = test

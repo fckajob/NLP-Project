@@ -9,10 +9,8 @@ warnings.filterwarnings('ignore') # Hides warning
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# Directly reading the amazon .tsv caused errors in data at the end, without concrete cause =>
-# missing_value = ["N/a", "na", np.nan, np.NAN, np.NaN, "null"]
-# df = pd.read_csv('./data/amazon_reviews_us_Electronics_v1_00.tsv', sep='\t', error_bad_lines=False, na_values=missing_value)
-# df = df.dropna()
+
+allowed_labels = ['1','2','3','4','5']
 
 # If data not available yet, please run data_loader.py
 df = pd.read_csv('./data/dataset_raw.csv')
@@ -32,6 +30,13 @@ for idx, row in enumerate(df['review_body']):
 # Not the Error
 df['review_body'] = df['review_body'].str.replace(r'<[^<>]*>', '', regex=True)
 
+# Remove not allowed labels and reviews of under 3 characters
+for index, row in df.iterrows():
+    if (str(row['star_rating']).strip() not in allowed_labels) or (len(str(row['review_body']).strip()) < 3):
+        df.drop(index, inplace=True)
+
+# Strip all whitespaces
+df.columns = df.columns.map(str.strip)
 
 # Noise Removal: Expanding Contractions
 # Not the Error
@@ -72,14 +77,15 @@ min_ratings = df_grouped['review_body'].min()
 max_ratings = df_grouped['review_body'].max()
 reduced_number = 25000
 
+size = min_ratings-25000
 df_for_testing = df[:25000]
 df_for_training = df[25000:]
 
-df_r1 = df_for_training[df_for_training['star_rating'] == 1].sample(n = reduced_number, random_state=1)
-df_r2 = df_for_training[df_for_training['star_rating'] == 2].sample(n = reduced_number, random_state=1)
-df_r3 = df_for_training[df_for_training['star_rating'] == 3].sample(n = reduced_number, random_state=1)
-df_r4 = df_for_training[df_for_training['star_rating'] == 4].sample(n = reduced_number, random_state=1)
-df_r5 = df_for_training[df_for_training['star_rating'] == 5].sample(n = reduced_number, random_state=1)
+df_r1 = df_for_training[df_for_training['star_rating'] == 1].sample(n = size, random_state=1)
+df_r2 = df_for_training[df_for_training['star_rating'] == 2].sample(n = size, random_state=1)
+df_r3 = df_for_training[df_for_training['star_rating'] == 3].sample(n = size, random_state=1)
+df_r4 = df_for_training[df_for_training['star_rating'] == 4].sample(n = size, random_state=1)
+df_r5 = df_for_training[df_for_training['star_rating'] == 5].sample(n = size, random_state=1)
 
 assert(len(df_r1) == len(df_r2) == len(df_r3) == len(df_r4) == len(df_r5))
 

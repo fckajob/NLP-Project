@@ -20,11 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class DataModel(BaseModel):
-    text:str
-
-
-nlp=spacy.load('./models/reviews_1')
+nlp = spacy.load('./models/reviews_1_balanced_full')
 def get_prediction(data):
     doc= nlp(data.text)
     #TODO: Get max prediction
@@ -39,7 +35,7 @@ def interface(data:DataModel):
                 'predictedrating' : int(max(doc.cats,key=lambda k:doc.cats[k])),
                 'probability': max(doc.cats.values())
               }
-    return ORJSONResponse(response)      
+    return ORJSONResponse(response)
 
 
 

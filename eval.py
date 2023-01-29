@@ -14,7 +14,6 @@ nlp = spacy.load('./models/reviews_1_balanced_full')
 
 train_data = pd.read_csv('./data/train_balanced.csv')
 test_data = pd.read_csv('./data/testing.csv')
-test_data = test_data[:100]
 
 model = ReviewModel(train_data, test_data, spacy_model=None, evaluate_only=False)
 scores = model.evaluation(nlp)
