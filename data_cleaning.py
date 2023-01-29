@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import warnings
 import re
-import nltk
 
 from sklearn.model_selection import train_test_split
 
