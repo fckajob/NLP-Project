@@ -34,7 +34,7 @@ function Form (props) {
         event.preventDefault();
         console.log(review);
         }else{
-            alert(`enter a valid text`)
+            alert(` Please enter a valid text`)
         }
       }
      
