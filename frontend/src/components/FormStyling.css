@@ -2,59 +2,67 @@
 
 body{
 
-    background-color:#00008B;
+    background-color:#f1f1f1;
     height: 100vh;
     overflow: hidden;
-    
+    font-family: 'Futura';
 }
 
 .title{
-
-    color: #e2eaea;
-    font-size: 80px;
-    margin-left:460px;
+    display: flex;
+    justify-content: center;
+    color: #000000;
+    font-size: 60px;
     padding-top: 10px;
-    font-family: 'Merienda One', cursive;
 
 }
 
 
 .form{
-
-    width: 200vh;
-    margin-left: 700px;
-    position: absolute;
-    bottom: 580px;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .input{
-    width: 40vh;
+    width: 100vh;
+    padding: 1rem;
     height:45px ;
-    font-family: 'Merienda One', cursive;
     font-size: 22px;
-    border-style: ridge;
-    border-color: black;
+    border-radius: 5px;
 }
 
 .button{
-margin-left: 5px;
-position: absolute;
-height: 50px;
-font-weight: bold;
-font-family: 'Merienda One', cursive;
-bottom: 1px;
-
+    text-align: center;
+    height: 50px;
+    font-weight: bold;
+    font-size:15;
+    bottom: 1px;
+    padding:1rem;
+    margin: 1rem;
+    border: none;
+    background-color: #ffffff;
+    transition-duration: 0.4s;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1), 0 2px 4px 0 rgba(0,0,0,0.19);
+}
+.button:hover{
+    background-color: rgb(227, 213, 26);
 }
 .probability{
-
-color: azure;
-position: absolute;
-left: 1100px;
-bottom: 389px;
-font-family: 'Merienda One', cursive;
+    color: rgb(0, 0, 0);
+    position: absolute;
+    left: 1100px;
+    bottom: 389px;
 }
 .probability1{
     margin-left: 15px;
-    font-family: 'Merienda One', cursive;
-    color: yellow;
+    color: rgb(227, 213, 26);
+}
+
+.probs{
+    margin-top:2rem;
 }

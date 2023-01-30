@@ -4,12 +4,12 @@ import './FormStyling.css'
 
 
 function Form (props) {
-    const [review,setReview] = useState(''); 
+    const [review,setReview] = useState('')
     console.log(review,"review")
-     const[prediction,setPrediction]=useState(0)
-     const[probability,setprobability]=useState(0)
-     console.log(prediction,"prediction");
-     
+    const[prediction,setPrediction]=useState(0)
+    const[probability,setprobability]=useState(0)
+    console.log(prediction,"prediction")
+
     // send request
     const request=(review) => {
     const requestOptions = {
@@ -19,16 +19,12 @@ function Form (props) {
     };
     fetch('http://127.0.0.1:8000/api/predict', requestOptions)
         .then(response => response.json())
-        .then(data =>  {setPrediction(data.predictedrating)
+        .then(data =>  {setPrediction(data.rating)
         setprobability(data.probability)}
-     
          );
-   
 
 
-    
  }
-  
     const handleSubmit = (event) => {
         if(review.trim().length !== 0){
         event.preventDefault();
@@ -37,9 +33,8 @@ function Form (props) {
             alert(` Please enter a valid text`)
         }
       }
-     
 
-      return( 
+      return(
        <div className='background' >
         <h1 className='title'> Predicting Amazon Reviews</h1>
         <form className='form' onSubmit={handleSubmit}>
@@ -48,11 +43,12 @@ function Form (props) {
         </label>
         <button onClick={e=>request(review)}  className="button" type="submit">Predict</button>
         </form>
-        <h1  className='probability'><label>{"Probability"}</label><label className='probability1'>{probability}</label></h1>
-
-        <h1>{props.getData(prediction)}</h1>
+        <div className='divstar'>
+            <h1>{props.getData(prediction)}</h1>
+            <h1  className=''><label>{"Probability:"}</label><label className='probability1'>{probability}</label></h1>
         </div>
-     );   
+        </div>
+     );
 }
 
 

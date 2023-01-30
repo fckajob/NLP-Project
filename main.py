@@ -9,8 +9,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 logger= logging.getLogger()
 app= FastAPI()
-origins=["http://localhost",
+origins=["http://localhost:3000",
 "http://localhost:8080"]
+
+class DataModel(BaseModel):
+    text: str
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,9 +33,9 @@ def get_prediction(data):
 @app.post("/api/predict",response_class=ORJSONResponse)
 def interface(data:DataModel):
     doc=get_prediction(data)
+    print(doc.cats)
     response={
-
-                'predictedrating' : int(max(doc.cats,key=lambda k:doc.cats[k])),
+                'rating' : int(max(doc.cats,key=lambda k:doc.cats[k])),
                 'probability': max(doc.cats.values())
               }
     return ORJSONResponse(response)

@@ -4,9 +4,6 @@ venv
 
 node_modules
 
-# Models folder
-models
-
 # Data folder
 data
 
