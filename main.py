@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 logger= logging.getLogger()
 app= FastAPI()
-origins=["http://localhost",
+origins=["http://localhost:3000",
 "http://localhost:8080"]
 
 app.add_middleware(
@@ -19,6 +19,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+class DataModel(BaseModel):
+    text:str
 
 nlp = spacy.load('./models/reviews_1_balanced_full')
 def get_prediction(data):
